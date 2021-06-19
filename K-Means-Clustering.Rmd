@@ -1,0 +1,125 @@
+---
+title: "K Means Clustering In R"
+author: "Matthew-D-Dwyer"
+date: "2021-06-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+## K Means Clustering
+
+This page demonstrates K-Means Clustering with some imaginary data. 
+
+### Part One - Loading Libraries
+
+```{r libraries, include = TRUE, message = FALSE, echo = TRUE}
+
+library(tidyverse)
+library(cluster)
+library(factoextra)
+library(meanShiftR)
+library(ggthemes)
+
+```
+
+### Part Two - Creating the data
+
+Samlping from a series of single digit integers, with some more common than others. Two columns of data are created, to be displayed in a 2D scatter plot. 
+
+#### Two - A - Setting up data 
+
+```{r creating data, include = TRUE, echo = TRUE}
+
+
+# size of test data, 3 = 1,000 rows, 2 = 100
+zeroes <- 4
+# k means requires you to tell it how many clusters there are 
+# the sample data will create 4 clusters 
+clusters <- 4
+
+# randomly select data from 1 - 6 with more 1's and 5's than other numbers
+# this will give two clusters in this dimension
+var_a <- sample(c(1,1,1,2,3,4,5,5,5,6), 1*10^zeroes, replace = TRUE)
+
+# do the same thing again 
+# two clusters in this dimension 
+var_b <- sample(c(1,1,1,1,2,2,3,4,5,5,5,5,6), 1*10^zeroes, replace = TRUE)
+
+# create a dataframe of the sample data
+variables <- data.frame(var_a = var_a, 
+                        var_b = var_b)
+
+```
+
+#### Two - B - Adding noise
+
+Adding some random noise to the numbers so the are a bit more interesting, and realistic. 
+
+```{r, inclue = TRUE, echo = TRUE}
+
+# add some noise to  the sample data 
+# add a random number from -1 to 1 to each variable 
+variables <- variables %>%
+  mutate(var_a = var_a+runif(1*10^zeroes, min = -1, max = 1),
+         var_b = var_b+runif(1*10^zeroes, min = -1, max = 1))
+
+```
+
+#### Two - C - Plotting the data
+
+Plotting the data to check for clusters, the clusters show up pretty clearly, there are four. K-Means requires you to specify the number of clusters, plotting is a quick way check how many. In this case I knew there would be four because I made the data. 
+
+```{r, include = TRUE, echo = TRUE}
+
+# plotting the pretend data to see how the clusters look 
+variables %>%
+  ggplot(aes(x = var_a, y = var_b)) + 
+  geom_point() +
+  theme_few()
+
+# two clusters in each direction for a total of four
+
+```
+
+### Part Three - Running the K-Means Function
+
+Running the K-Means function and plotting the results, one colour per cluster. 
+
+```{r, running the k-means function, include = TRUE, echo = TRUE}
+
+# running the k means function
+# one component of the result is a column with a number for the cluster each point
+# belongs to
+
+km  <- kmeans(variables, clusters)
+
+# adding a column to the test data, with each cluster that the 
+# point falls in
+variables <- variables %>%
+  mutate(cluster = km$cluster)  %>%
+  # converting to factor, or ggplplot will shade it rather than 
+  # using discrete colours
+  mutate(cluster = factor(cluster, levels = 1:clusters))
+
+```
+
+### Part Four - Plotting the results 
+
+Scatter plot with all the points, coloured by the cluster K-Means assigned them.
+
+```{r, plotting the results, include = TRUE, echo = TRUE}
+
+
+# plotting the test data with the colours indicating the cluster
+variables %>% 
+  ggplot(aes(x = var_a, y = var_b, col = cluster)) + 
+  geom_point() +
+  theme_few() 
+
+```
+
