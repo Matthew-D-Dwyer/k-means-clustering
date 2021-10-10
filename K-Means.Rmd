@@ -1,11 +1,67 @@
 ---
-title: "K Means Clustering In R"
-author: "Matthew-D-Dwyer"
-date: "2021-06-19"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: 
+      collapsed: false
+  number_sections: true
+ 
+title: ""
+author: "[User-764Q](https://github.com/User-764Q)"
+date: "`r paste0('Last Run: ', format(Sys.time(), '%A %d-%B-%Y'))`"
+params: 
+  param1: "Don't Forget about params"
+
 ---
 
-```{r setup, include=FALSE}
+<style>
+
+#TOC {
+ font-family: Calibri; 
+ font-size: 16px;
+ border-color: #3D68DF;
+ background: #3D68DF;
+}
+
+body {
+  font-family: Garamond;
+  font-size: 16px; 
+  border-color: #D0D0D0;
+  background-color: #D0D0D0;
+  color: #1A1A1A;
+}
+
+pre {
+  color: #1A1A1A
+  background: #D0D0D0;
+  background-color: #D0D0D0
+  font-family: Calibri; 
+  
+}
+
+</style>
+
+```{r setup, include = FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+knitr::opts_chunk$set(collapse = TRUE)
+
+knitr::opts_chunk$set(warning = TRUE)
+
+knitr::opts_chunk$set(message = TRUE)
+
+knitr::opts_chunk$set(include = TRUE)
+
+custom_black <- '1A1A1A'
+custom_white <- 'C0C0C0'
+custom_grey_dark <- '6F6F6F'
+custom_grey_light <- 'B2B2B2'
+custom_accent_blue <- '3D6BFF'
+
+```
+
+```{r, include=FALSE}
 
 knitr::opts_chunk$set(echo = FALSE)
 
@@ -15,7 +71,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 This page demonstrates K-Means Clustering with some imaginary data. 
 
-### Part One - Loading Libraries
+### Loading Libraries
 
 ```{r libraries, include = TRUE, message = FALSE, echo = TRUE}
 
@@ -27,11 +83,11 @@ library(ggthemes)
 
 ```
 
-### Part Two - Creating the data
+###  Creating the data
 
 Samlping from a series of single digit integers, with some more common than others. Two columns of data are created, to be displayed in a 2D scatter plot. 
 
-#### Two - A - Setting up data 
+#### TSetting up data 
 
 ```{r creating data, include = TRUE, echo = TRUE}
 
@@ -56,7 +112,7 @@ variables <- data.frame(var_a = var_a,
 
 ```
 
-#### Two - B - Adding noise
+#### Adding noise
 
 Adding some random noise to the numbers so the are a bit more interesting, and realistic. 
 
@@ -70,7 +126,7 @@ variables <- variables %>%
 
 ```
 
-#### Two - C - Plotting the data
+#### Plotting the data
 
 Plotting the data to check for clusters, the clusters show up pretty clearly, there are four. K-Means requires you to specify the number of clusters, plotting is a quick way check how many. In this case I knew there would be four because I made the data. 
 
@@ -86,7 +142,7 @@ variables %>%
 
 ```
 
-### Part Three - Running the K-Means Function
+### Running K-Means
 
 Running the K-Means function and plotting the results, one colour per cluster. 
 
@@ -108,7 +164,7 @@ variables <- variables %>%
 
 ```
 
-### Part Four - Plotting the results 
+### Plotting results 
 
 Scatter plot with all the points, coloured by the cluster K-Means assigned them.
 
